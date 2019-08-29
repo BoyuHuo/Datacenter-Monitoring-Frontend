@@ -1,0 +1,293 @@
+<div class="m-content">
+    <div class="row">
+        <div class="col-xl-12">
+            <!--begin:: Widgets/Application Sales-->
+            <div class="m-portlet m-portlet--full-height  m-portlet--unair">
+                <div class="m-portlet__head list-header">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text">
+                                设备列表
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-caption text-right">
+                        <button class="btn btn-success btn-sm" (click)="currentDevice = {}; isShowDetails = true;">
+                            创建设备
+                        </button>
+                        <button class="btn btn-success btn-sm" (click)="power('on')">
+                            启动
+                        </button>
+                        <button class="btn btn-success btn-sm" (click)="power('off')">
+                            停止
+                        </button>
+                        <button class="btn btn-success btn-sm">
+                            ...更多操作
+                        </button>
+                    </div>
+                </div>
+                <div class="m-portlet__body">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="m_widget11_tab1_content">
+                            <!--begin::Widget 11-->
+                            <div class="m-widget11" *ngIf="!isShowDetails">
+                                <div class="table-responsive">
+                                    <!--begin::Table-->
+                                    <table class="table">
+                                        <!--begin::Thead-->
+                                        <thead>
+                                            <tr>
+                                                <td class="m-widget11__label">#</td>
+                                                <td class="m-widget11__label">Name</td>
+                                                <td class="m-widget11__label">IP</td>
+                                                <td class="m-widget11__label">Port</td>
+                                                <td class="m-widget11__label">Interface</td>
+                                                <td class="m-widget11__label">Cluster</td>
+                                                <td class="m-widget11__label">Server</td>
+                                                <td class="m-widget11__label">Desc</td>
+                                                <td class="m-widget11__label">SN</td>
+                                                <td class="m-widget11__label">创建日期</td>
+                                                <td class="m-widget11__label">操作</td>
+
+                                            </tr>
+                                        </thead>
+                                        <!--end::Thead-->
+                                        <!--begin::Tbody-->
+                                        <tbody>
+                                            <tr *ngFor="let device of deviceList; let i=index">
+                                                <td>
+                                                    <label
+                                                        class="m-checkbox m-checkbox--solid m-checkbox--single m-checkbox--brand">
+                                                        <input type="checkbox" (change) = "$event.target.checked?addList(i):removeList(i);"><span></span>
+                                                    </label>
+                                                </td>
+                                                <td> {{device.name}} </td>
+                                                <td>{{device.ipmi_ip}}</td>
+                                                <td>{{device.ipmi_port}}</td>
+                                                <td>{{device.interface}}</td>
+                                                <td>{{device.cluster}}</td>
+                                                <td>{{device.server_id}}</td>
+                                                <td>{{device.description}}</td>
+                                                <td>{{device.ipmi_sn}}</td>
+                                                <td></td>
+                                                <td class="m--align-left m--font-brand">
+                                                    <button class="btn btn-success btn-sm"
+                                                        (click)="currentDevice = device; isShowDetails = true;">
+                                                        详情查看
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <!--end::Tbody-->
+                                    </table>
+                                    <!--end::Table-->
+                                </div>
+                                <pagination [total]="totalDevices" [currentPage]="currentPage"
+									[pageSize]="pageSize" [numberSize]="listSize"
+									[name]="'devices'" (goPage)="getDevices($event)">
+								</pagination>
+                            </div>
+                            <!--end::Widget 11-->
+                            <div class="tab-pane" id="m_widget5_tab2_content">
+                                <div *ngIf = "isShowDetails && !currentDevice.server_id">请输入详细信息或者通过<a href = "javascript:;" (click) = "isUpload = true">上传CSV文件</a>创建新设备</div>
+                                <form class="m-form m-form--fit m-form--label-align-right" name="deviceForm"
+                                    #deviceForm="ngForm" (submit)="submitDevice();" action="" *ngIf="isShowDetails && !isUpload">
+                                    <div class="m-portlet__body">
+                                        <!-- <div class="form-group m-form__group text-center">
+                                            <ng-template #alertEditCredit></ng-template>
+                                        </div> -->
+                                        <div class="form-group m-form__group row" [ngClass]="{'has-danger': name.invalid && (name.dirty || name.touched ),
+                                            'has-success': name.valid && (name.dirty || name.touched)}">
+                                            <label for="name" class="col-sm-3 col-4 col-form-label">
+                                                Name
+                                            </label>
+                                            <div class="col-sm-6 col-8">
+                                                <input class="form-control m-input" id="name" type="text"
+                                                    [(ngModel)]="currentDevice.name" name="name" #name="ngModel"
+                                                    required maxlength="60">
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group row" [ngClass]="{'has-danger': ipmi_ip.invalid && (ipmi_ip.dirty || ipmi_ip.touched ),
+                                            'has-success': ipmi_ip.valid && (ipmi_ip.dirty || ipmi_ip.touched)}">
+                                            <label for="ipmi_ip" class="col-sm-3 col-4 col-form-label">
+                                                IP
+                                            </label>
+                                            <div class="col-sm-6 col-8">
+                                                <input class="form-control m-input" id="ipmi_ip" type="text"
+                                                    [(ngModel)]="currentDevice.ipmi_ip" name="ipmi_ip"
+                                                    #ipmi_ip="ngModel" required maxlength="255">
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group row" [ngClass]="{'has-danger': ipmi_port.invalid && (ipmi_port.dirty || ipmi_port.touched ),
+                                        'has-success': ipmi_port.valid && (ipmi_port.dirty || ipmi_port.touched)}">
+                                            <label for="ipmi_port" class="col-sm-3 col-4 col-form-label">
+                                                Port
+                                            </label>
+                                            <div class="col-sm-6 col-8">
+                                                <input class="form-control m-input" id="ipmi_port" type="text"
+                                                    [(ngModel)]="currentDevice.ipmi_port" name="ipmi_port" #ipmi_port="ngModel"
+                                                    maxlength="255">
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group row" [ngClass]="{'has-danger': ipmi_username.invalid && (ipmi_username.dirty || ipmi_username.touched ),
+                                        'has-success': ipmi_username.valid && (ipmi_username.dirty || ipmi_username.touched)}">
+                                            <label for="ipmi_username" class="col-sm-3 col-4 col-form-label">
+                                                User Name
+                                            </label>
+                                            <div class="col-sm-6 col-8">
+                                                <input class="form-control m-input" id="ipmi_username" type="text"
+                                                    [(ngModel)]="currentDevice.ipmi_username" name="ipmi_username"
+                                                    #ipmi_username="ngModel" required maxlength="255">
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group row" [ngClass]="{'has-danger': ipmi_pwd.invalid && (ipmi_pwd.dirty || ipmi_pwd.touched ),
+                                        'has-success': ipmi_pwd.valid && (ipmi_pwd.dirty || ipmi_pwd.touched)}">
+                                            <label for="ipmi_pwd" class="col-sm-3 col-4 col-form-label">
+                                                Password
+                                            </label>
+                                            <div class="col-sm-6 col-8">
+                                                <input class="form-control m-input" id="ipmi_pwd" type="text"
+                                                    [(ngModel)]="currentDevice.ipmi_pwd" name="ipmi_pwd" #ipmi_pwd="ngModel"
+                                                    required maxlength="255">
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group row"
+                                            [ngClass]="{'has-danger': interface.invalid && (interface.dirty || interface.touched ),
+                                                   'has-success': interface.valid && (interface.dirty || interface.touched)}">
+                                            <label for="interface" class="col-sm-3 col-5 col-form-label">
+                                                Interface
+                                            </label>
+                                            <div class="col-sm-6 col-8">
+                                                <input class="form-control m-input" type="text" id="interface"
+                                                    [(ngModel)]="currentDevice.interface" name="interface"
+                                                    #interface="ngModel" maxlength="60">
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group row">
+                                            <label for="cluster" class="col-sm-3 col-4 col-form-label">
+                                                Cluster
+                                            </label>
+                                            <div class="col-sm-6 col-8">
+                                                <input class="form-control m-input" id="cluster" type="text"
+                                                    [(ngModel)]="currentDevice.cluster" name="cluster"
+                                                    #cluster="ngModel">
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group row">
+                                            <label for="chassis_id" class="col-sm-3 col-4 col-form-label">
+                                                Chassis ID
+                                            </label>
+                                            <div class="col-sm-6 col-8">
+                                                <input class="form-control m-input" id="chassis_id" type="text"
+                                                    [(ngModel)]="currentDevice.chassis_id" name="chassis_id"
+                                                    #chassis_id="ngModel">
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group row">
+                                            <label for="MAC" class="col-sm-3 col-4 col-form-label">
+                                                MAC
+                                            </label>
+                                            <div class="col-sm-6 col-8">
+                                                <input class="form-control m-input" id="MAC" type="text"
+                                                    [(ngModel)]="currentDevice.MAC" name="MAC"
+                                                    #MAC="ngModel">
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group row" *ngIf = "currentDevice.server_id">
+                                            <label for="server_id" class="col-sm-3 col-4 col-form-label">
+                                                Server
+                                            </label>
+                                            <div class="col-sm-6 col-8">
+                                                <input class="form-control m-input" id="server_id" type="text"
+                                                    [(ngModel)]="currentDevice.server_id" name="server_id"
+                                                    #server_id="ngModel" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group row">
+                                            <label for="description" class="col-sm-3 col-4 col-form-label">
+                                                Description
+                                            </label>
+                                            <div class="col-sm-6 col-8">
+                                                <input class="form-control m-input" id="description" type="text"
+                                                    [(ngModel)]="currentDevice.description" name="description"
+                                                    #description="ngModel">
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group row">
+                                            <label for="ipmi_sn" class="col-sm-3 col-4 col-form-label">
+                                                Series Number
+                                            </label>
+                                            <div class="col-sm-6 col-8">
+                                                <input class="form-control m-input" id="ipmi_sn" type="text"
+                                                    [(ngModel)]="currentDevice.ipmi_sn" name="ipmi_sn" #ipmi_sn="ngModel" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="m-portlet__foot m-portlet__foot--fit">
+                                        <div class="m-form__actions">
+                                            <div class="row">
+                                                <div class="col-sm-2 col-1"></div>
+                                                <div class="col-sm-7 col-9">
+                                                    <button type="submit"
+                                                        class="btn btn-theme m-btn m-btn--air m-btn--custom"
+                                                        [disabled]="deviceForm.invalid">
+                                                        <span>{{currentDevice.server_id ? 'Update' : 'Create'}}</span>
+                                                    </button>
+                                                    &nbsp;&nbsp;
+                                                    <button class="btn btn-secondary m-btn m-btn--air m-btn--custom"
+                                                        (click)="isShowDetails = !isShowDetails">
+                                                        Cancel
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <form class="m-form m-form--fit m-form--label-align-right" name="csvForm"
+                                    #csvForm="ngForm" (submit)="submitCSV();" action="" *ngIf="isShowDetails && isUpload">
+                                    <div class="m-portlet__body">
+                                        <!-- <div class="form-group m-form__group text-center">
+                                            <ng-template #alertEditCredit></ng-template>
+                                        </div> -->
+                                        <div class="form-group m-form__group row" [ngClass]="{'has-danger': file.invalid && (file.dirty || file.touched ),
+                                            'has-success': file.valid && (file.dirty || file.touched)}">
+                                            <label for="file" class="col-sm-3 col-4 col-form-label">
+                                                CSV 文件
+                                            </label>
+                                            <div class="col-sm-6 col-8">
+                                                <input class="form-control m-input" id="file" type="file"
+                                                    name="file" required ngModel #file = "ngModel" accept = "application/csv"
+                                                    (change)="handleFileInput($event.target.files);">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="m-portlet__foot m-portlet__foot--fit">
+                                        <div class="m-form__actions">
+                                            <div class="row">
+                                                <div class="col-sm-2 col-1"></div>
+                                                <div class="col-sm-7 col-9">
+                                                    <button type="submit"
+                                                        class="btn btn-theme m-btn m-btn--air m-btn--custom"
+                                                        [disabled]="csvForm.invalid">
+                                                        <span>Upload</span>
+                                                    </button>
+                                                    &nbsp;&nbsp;
+                                                    <button class="btn btn-secondary m-btn m-btn--air m-btn--custom"
+                                                        (click)="isShowDetails = !isShowDetails; isUpload = false;">
+                                                        Cancel
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end:: Widgets/Application Sales-->
+        </div>
+    </div>
+</div>

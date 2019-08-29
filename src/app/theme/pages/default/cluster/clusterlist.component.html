@@ -1,0 +1,141 @@
+<div class="m-content">
+    <div class="row">
+        <div class="col-xl-12">
+            <!--begin:: Widgets/Application Sales-->
+            <div class="m-portlet m-portlet--full-height  m-portlet--unair">
+                <div class="m-portlet__head list-header">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text">
+                                Group List
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-caption text-right">
+                        <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#addGroup">
+                            Create a group
+                        </button>
+                        <button class="btn btn-success btn-sm" onclick="jumpTo('inner.html')">
+                            Delete all chosen groups
+                        </button>
+                    </div>
+                </div>
+                <div class="m-portlet__body">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="m_widget11_tab1_content">
+                            <!--begin::Widget 11-->
+                            <div class="m-widget11">
+                                <div class="table-responsive">
+                                    <!--begin::Table-->
+                                    <table class="table">
+                                        <!--begin::Thead-->
+                                        <thead>
+                                            <tr>
+                                                <td class="m-widget11__label">
+                                                    <label
+                                                        class="m-checkbox m-checkbox--solid m-checkbox--single m-checkbox--brand">
+                                                        <input type="checkbox"><span></span>
+                                                    </label>
+                                                </td>
+                                                <td class="m-widget11">Group Name 
+                                                        <i class="fa fa-caret-down" (click)="order.name = !order.name; reverse('name')"
+                                                        [ngClass]="{'fa-caret-down': order.name, 'fa-caret-up': !order.name}"></i>
+                                                </td>
+                                                <td class="m-widget11">Power on machines 
+                                                        <i class="fa fa-caret-down" (click)="order.active = !order.active; reverse('active')"
+                                                        [ngClass]="{'fa-caret-down': order.active, 'fa-caret-up': !order.active}"></i>
+                                                </td>
+                                                <td class="m-widget11">Total machines 
+                                                        <i class="fa fa-caret-down" (click)="order.total = !order.total; reverse('total')"
+                                                        [ngClass]="{'fa-caret-down': order.total, 'fa-caret-up': !order.total}"></i>
+                                                </td>
+                                                <td class="m-widget11">Create at 
+                                                        <i class="fa fa-caret-down" (click)="order.create_at = !order.create_at; reverse('create_at')"
+                                                        [ngClass]="{'fa-caret-down': order.create_at, 'fa-caret-up': !order.create_at}"></i>
+                                                </td>
+                                                <td class="m-widget11 text-center" colspan="2">Action</td>
+                                            </tr>
+                                        </thead>
+                                        <!--end::Thead-->
+                                        <!--begin::Tbody-->
+                                        <tbody>
+                                            <tr *ngFor="let cluster of clusterList">
+                                                <td>
+                                                    <label
+                                                        class="m-checkbox m-checkbox--solid m-checkbox--single m-checkbox--brand">
+                                                        <input type="checkbox"><span></span>
+                                                    </label>
+                                                </td>
+                                                <td>
+                                                    <span class="m-widget11__title"><a href="javascript:;"
+                                                            [routerLink]="['/cluster', cluster.id]">{{cluster.name}}</a></span>
+                                                </td>
+                                                <td>{{cluster.active}}</td>
+                                                <td>
+                                                    {{cluster.total}}
+                                                </td>
+                                                <td>{{cluster.create_at | date:'short'}}</td>
+                                                <td class = "text-center">
+                                                    <button class="btn btn-success btn-sm" (click) = "this.currentGroup = cluster" data-toggle="modal" data-target="#addGroup">
+                                                        Edit
+                                                    </button>
+                                                </td>
+                                                <td  class = "text-center">
+                                                    <button class="btn btn-success btn-sm"
+                                                        (click)="deleteGroup('inner.html')">
+                                                        Delete
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <!--end::Tbody-->
+                                    </table>
+                                    <!--end::Table-->
+                                </div>
+                                <pagination [total]="totalClusters" [currentPage]="currentPage" [pageSize]="pageSize"
+                                    [numberSize]="listSize" [name]="'groups'" (goPage)="getGroups($event)">
+                                </pagination>
+                            </div>
+                            <!--end::Widget 11-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end:: Widgets/Application Sales-->
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addGroup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">
+                        &times;
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group row">
+                    <label for="name" class="col-sm-3 col-4 col-form-label">
+                        Name
+                    </label>
+                    <div class="col-sm-6 col-8">
+                        <input class="form-control m-input" id="name" type="text" [(ngModel)]="currentGroup.name"
+                            name="name" #name="ngModel" required maxlength="255">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-theme" (click)="currentGroup.id? editGroup() : createGroup();" data-dismiss="modal">
+                    Confirm
+                </button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

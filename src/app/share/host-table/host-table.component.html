@@ -1,0 +1,157 @@
+<div class="m-portlet__body">
+    <div class="tab-content">
+        <div class="tab-pane active" id="m_widget11_tab1_content">
+            <!--begin::Widget 11-->
+            <div class="m-widget11">
+                <div class="table-responsive">
+                    <!--begin::Table-->
+                    <table class="table">
+                        <!--begin::Thead-->
+                        <thead>
+                            <tr>
+                                <td class="m-widget11__label"><label
+                                        class="m-checkbox m-checkbox--solid m-checkbox--single m-checkbox--brand">
+                                        <input type="checkbox"
+                                            (change)="allChecked = $event.target.checked;$event.target.checked?addList(-1):removeList(-1);"><span></span>
+                                    </label></td>
+                                <td class="m-widget11__label" *ngIf="setting.fields.name">Name
+                                    <i class="fa fa-caret-down"
+                                        (click)="order.server_host = !order.server_host; reverse('server_host')"
+                                        [ngClass]="{'fa-caret-down': order.server_host, 'fa-caret-up': !order.server_host}"></i>
+                                </td>
+                                <td class="m-widget11__label" *ngIf="setting.fields.ip">IP Address
+                                    <i class="fa fa-caret-down" (click)="order.ip = !order.ip; reverse('ip')"
+                                        [ngClass]="{'fa-caret-down': order.ip, 'fa-caret-up': !order.ip}"></i>
+                                </td>
+                                <td class="m-widget11__label" *ngIf="setting.fields.port">SSH Port
+                                    <i class="fa fa-caret-down"
+                                        (click)="order.ssh_port = !order.ssh_port; reverse('ssh_port')"
+                                        [ngClass]="{'fa-caret-down': order.ssh_port, 'fa-caret-up': !order.ssh_port}"></i>
+                                </td>
+                                <td class="m-widget11__label" *ngIf="setting.fields.group">Belong Group
+                                    <i class="fa fa-caret-down"
+                                        (click)="order.group_name = !order.group_name; reverse('group_name')"
+                                        [ngClass]="{'fa-caret-down': order.group_name, 'fa-caret-up': !order.group_name}"></i>
+                                </td>
+                                <td class="m-widget11__label" *ngIf="setting.fields.powerStatus">Power Status
+                                    <i class="fa fa-caret-down"
+                                        (click)="order.power_status = !order.power_status; reverse('power_status')"
+                                        [ngClass]="{'fa-caret-down': order.power_status, 'fa-caret-up': !order.power_status}"></i>
+                                </td>
+                                <td class="m-widget11__label" *ngIf="setting.fields.miningStatus">Mining Status
+                                    <i class="fa fa-caret-down"
+                                        (click)="order.power_status = !order.power_status; reverse('power_status')"
+                                        [ngClass]="{'fa-caret-down': order.power_status, 'fa-caret-up': !order.power_status}"></i>
+                                </td>
+                                <td class="m-widget11__label" *ngIf="setting.fields.containerNumber">Containers Number
+                                    <i class="fa fa-caret-down"
+                                        (click)="order.power_status = !order.power_status; reverse('power_status')"
+                                        [ngClass]="{'fa-caret-down': order.power_status, 'fa-caret-up': !order.power_status}"></i>
+                                </td>
+                                <td class="m-widget11__label text-center" *ngIf="setting.fields.action">
+                                    Action</td>
+                            </tr>
+                        </thead>
+                        <!--end::Thead-->
+                        <!--begin::Tbody-->
+                        <tbody>
+                            <tr *ngFor="let server of serversList">
+                                <td>
+                                    <label class="m-checkbox m-checkbox--solid m-checkbox--single m-checkbox--brand">
+                                        <input type="checkbox"
+                                            (change)="$event.target.checked?addList(server):removeList(server);"
+                                            [checked]="allChecked"><span></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <span class="m-widget11__title" *ngIf="setting.fields.name">
+                                        <a href="javascript:;"
+                                            [routerLink]="['/host', server.id]">{{server.server_host}}</a>
+                                    </span>
+                                </td>
+                                <td *ngIf="setting.fields.ip">{{server.ip}}</td>
+                                <td *ngIf="setting.fields.port">{{ssh_port}}</td>
+                                <td *ngIf="setting.fields.group">{{server.group_name}}</td>
+                                <td *ngIf="setting.fields.powerStatus">{{server.power_status ? 'Power' : 'Unknow'}} {{server.power_status}}
+                                <td *ngIf="setting.fields.miningStatus">{{server.is_mining ? 'Mining' : 'Idle'}}
+                                <td *ngIf="setting.fields.containerNumber">{{server.containers}}
+                                </td>
+                                <td class="text-center" *ngIf="setting.fields.action">
+                                    <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#editServer"
+                                        (click)="currentHost = server">
+                                        Edit
+                                    </button>
+                                    <button class="btn btn-success btn-sm"
+                                        (click)="power(server.power_status == 'off' ? 'on' : 'off')">Power
+                                        {{server.power_status == 'off' ? 'On' : 'Off'}}</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <!--end::Tbody-->
+                    </table>
+                    <!--end::Table-->
+                </div>
+                <pagination [total]="totalServers" [currentPage]="current.page" [pageSize]="pageSize"
+                    [numberSize]="listSize" [name]="'servers'" (goPage)="getServersList($event)">
+                </pagination>
+            </div>
+            <!--end::Widget 11-->
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editServer" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-md middle" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">
+                        &times;
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div class="form-group row">
+                        <label for="name" class="col-sm-3 col-4 col-form-label">
+                            Name
+                        </label>
+                        <div class="col-sm-6 col-8">
+                            <input class="form-control m-input" id="name" type="text"
+                                [(ngModel)]="currentHost.server_host" name="name" #name="ngModel" required
+                                maxlength="255">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="ip" class="col-sm-3 col-4 col-form-label">
+                            IP Address
+                        </label>
+                        <div class="col-sm-6 col-8">
+                            <input class="form-control m-input" id="ip" type="text" [(ngModel)]="currentHost.ip"
+                                name="ip" #ip="ngModel" required
+                                pattern="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="port" class="col-sm-3 col-4 col-form-label">
+                            SSH Port
+                        </label>
+                        <div class="col-sm-6 col-8">
+                            <input class="form-control m-input" id="port" type="number" [(ngModel)]="currentHost.port"
+                                name="port" #port="ngModel" required max="65535" maxlength="5">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-theme" (click)="editServer()" data-dismiss="modal">
+                    Confirm
+                </button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

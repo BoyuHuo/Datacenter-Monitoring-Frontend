@@ -1,0 +1,227 @@
+<div class="m-grid__item m-grid__item--fluid m-grid m-grid--ver-desktop m-grid--desktop m-grid--tablet-and-mobile m-grid--hor-tablet-and-mobile m-login m-login--1 m-login--singin"
+	id="m_login">
+	<div class="m-grid__item m-grid__item--order-tablet-and-mobile-2 m-login__aside">
+		<div class="m-login__logo">
+			<a href="/">
+				<img src="./assets/app/media/img//logos/orion-logo-b.png" style="width: 100px;" />
+			</a>
+		</div>
+		<div class="m-stack m-stack--hor m-stack--desktop" style="height: auto;">
+			<div class="m-stack__item m-stack__item--fluid">
+				<div class="m-login__wrapper">
+
+					<div class="m-login__signin">
+						<div class="m-login__head">
+							<h3 class="m-login__title">
+								Sign In
+								<span style="font-weight: 100; font-size: 1rem;">as Administrator</span>
+							</h3>
+							<!-- <div class="m--margin-top-40 m-alert m-alert--outline m-alert--outline-2x alert alert-success fade show" role="alert">
+								Use username
+								<span style="font-weight: 500;">
+									demo@demo.com
+								</span>
+								and password
+								<span style="font-weight: 500;">
+									demo
+								</span>
+								to continue or singup.
+							</div> -->
+						</div>
+						<form (ngSubmit)="f.form.valid && signin()" #f="ngForm" class="m-login__form m-form"
+							#loginForm="ngForm" class="m-login__form m-form">
+							<ng-template #alertSignin></ng-template>
+
+							<!-- <div class="form-group m-form__group row">
+								<div class="before-form col-4">
+									I am a:
+								</div>
+								<div class="before-form col-4">
+									<input class="form-control" name="type" type="radio" value="developer" checked>
+									<label>Developer</label>
+								</div>
+								<div class="before-form col-4">
+									<input class="form-control" name="type" style="margin-left: .5rem;" type="radio" value="ledger">
+									<label>Ledger</label>
+								</div>
+							</div> -->
+							<div class="form-group m-form__group">
+								<input class="form-control m-input" type="text" placeholder="Email" name="userName"
+									ngModel #userName="ngModel" autocomplete="off">
+							</div>
+							<div class="form-group m-form__group">
+								<input class="form-control m-input m-login__form-input--last" type="password"
+									placeholder="Password" name="password" ngModel #password="ngModel">
+							</div>
+							<div class="row m-login__form-sub">
+								<div class="col m--align-left">
+									<label class="m-checkbox m-checkbox--focus">
+										<input type="checkbox" name="remember" ngModel #remember="ngModel"> Remember me
+										<span></span>
+									</label>
+								</div>
+								<div class="col m--align-right">
+									<!-- <a href="javascript:;" id="m_login_forget_password" class="m-link">
+										Forget Password ?
+									</a> -->
+								</div>
+							</div>
+							<div class="m-login__form-action">
+								<button [disabled]="loading"
+									[ngClass]="{'m-loader m-loader--right m-loader--light': loading}"
+									id="m_login_signin_submit"
+									class="btn btn-focus m-btn m-btn--pill m-btn--custom m-btn--air">
+									Sign In
+								</button>
+							</div>
+						</form>
+						<!-- <div class="m-login__form-divider">
+							<div class="m-divider">
+								<span></span>
+								<span>OR</span>
+								<span></span>
+							</div>
+						</div>
+						<div class="m-login__options">
+							<a href="javascript:;">
+								<span>
+									<i class="fa fa-facebook-f"></i>&nbsp;
+									<span>Facebook</span>
+								</span>
+							</a>
+
+							<a href="javascript:;" >
+								<span>
+									<i class="fa fa-twitter"></i>&nbsp;
+									<span>Twitter</span>
+								</span>
+							</a>
+
+							<a href="javascript:;" style="background-color: #f4516c;">
+								<span>
+									<i class="fa fa-google"></i>&nbsp;
+									<span>Google</span>
+								</span>
+							</a>
+						</div> -->
+					</div>
+					<!-- <div class="m-login__signup">
+						<div class="m-login__head">
+							<h3 class="m-login__title">
+								Sign Up
+							</h3>
+							<div class="m-login__desc">
+								Enter your details to create your account:
+							</div>
+						</div>
+						<form (ngSubmit)="f.form.valid && signup()" name="registerForm" #registerForm="ngForm" class="m-login__form m-form">
+							<ng-template #alertSignup></ng-template>
+
+							<div class="form-group m-form__group" *ngIf="isLedger">
+								<input class="form-control m-input" type="text" placeholder="IP (0.0.0:8080)" name="ip" ngModel #ip="ngModel">
+							</div>
+							<div class="form-group m-form__group">
+								<input class="form-control m-input" type="text" placeholder="Email" name="email" ngModel #email="ngModel" autocomplete="off"
+								 pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required>
+								<input class="form-control m-input" type="text" id="firstName" name="firstName" ngModel #firstName="ngModel"
+										placeholder="First Name*" required maxlength="50">
+							</div>
+							<div class="form-group m-form__group">
+								<input class="form-control m-input" type="text" id="lastName" name="lastName" ngModel #lastName="ngModel"
+									placeholder="Last Name*" required maxlength="50">
+							</div>
+							<div class="form-group m-form__group">
+								<input class="form-control m-input" type="text" placeholder="Company" name="company" ngModel #company="ngModel" autocomplete="off">
+							</div>
+							<div class="form-group m-form__group">
+								<input class="form-control m-input" type="text" placeholder="Email*" name="email" ngModel #email="ngModel" autocomplete="off"
+								 pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required>
+							</div>
+							<div class="form-group m-form__group">
+								<input class="form-control m-input" type="password" placeholder="Password*" name="regPassword" ngModel #regPassword="ngModel"
+								 required pattern="^(?=.*\d)(?=.*[a-z]).{6,16}$">
+								 Minimum length of 6 including a letter and a number
+							</div>
+							<div class="form-group m-form__group">
+								<input class="form-control m-input m-login__form-input--last" type="password" placeholder="Confirm Password*" name="rpassword"
+								 ngModel #rpassword="ngModel">
+							</div>
+							<div class="row form-group m-form__group m-login__form-sub">
+								<div class="col m--align-left">
+									<label class="m-checkbox m-checkbox--focus">
+										<input type="checkbox" name="agree" ngModel #agree="ngModel"> I have read and Agree the
+										<a href="javascript:;" class="m-link m-link--focus">
+											terms and conditions
+										</a>
+										.
+										<span></span>
+									</label>
+									<span class="m-form__help"></span>
+								</div>
+							</div>
+							<div class="m-login__form-action">
+								<button [disabled]="loading" [ngClass]="{'m-loader m-loader--right m-loader--light': loading}" id="m_login_signup_submit"
+								 class="btn btn-focus m-btn m-btn--pill m-btn--custom m-btn--air">
+									Sign Up
+								</button>
+								<button [disabled]="loading" id="m_login_signup_cancel" class="btn btn-outline-focus  m-btn m-btn--pill m-btn--custom">
+									Cancel
+								</button>
+							</div>
+						</form>
+					</div> -->
+
+					<!-- <div class="m-login__forget-password">
+						<div class="m-login__head">
+							<h3 class="m-login__title">
+								Forgot Password ?
+							</h3>
+							<div class="m-login__desc">
+								Enter your email to reset your password:
+							</div>
+						</div>
+						<form (ngSubmit)="forgotForm.form.valid && forgotPass()" name="forgotForm" #forgotForm="ngForm" class="m-login__form m-form">
+							<ng-template #alertForgotPass></ng-template>
+							<div class="form-group m-form__group">
+								<input class="form-control m-input" type="text" placeholder="Email" name="email" ngModel #email="ngModel" id="m_email" autocomplete="off">
+							</div>
+							<div class="m-login__form-action">
+								<button [disabled]="loading" [ngClass]="{'m-loader m-loader--right m-loader--light': loading}" id="m_login_forget_password_submit"
+								 class="btn btn-focus m-btn m-btn--pill m-btn--custom m-btn--air">
+									Request
+								</button>
+								<button [disabled]="loading" id="m_login_forget_password_cancel" class="btn btn-outline-focus m-btn m-btn--pill m-btn--custom">
+									Cancel
+								</button>
+							</div>
+						</form>
+					</div> -->
+				</div>
+			</div>
+			<!-- <div class="m-stack__item m-stack__item--center">
+				<div class="m-login__account">
+					<span class="m-login__account-msg">
+						Don't have an account yet ?
+					</span>
+					&nbsp;&nbsp;
+					<a href="javascript:;" id="m_login_signup" class="m-link m-link--focus m-login__account-link">
+						Sign Up
+					</a>
+				</div>
+			</div> -->
+		</div>
+	</div>
+	<div class="m-grid__item m-grid__item--fluid m-grid m-grid--center m-grid--hor m-grid__item--order-tablet-and-mobile-1	m-login__content"
+		[ngClass]="{'m-login__content-ledger': isLedger}">
+		<div class="m-grid__item m-grid__item--middle" style="align-self: normal;">
+			<!-- <h3 class="m-login__welcome">
+				Join as {{isLedger? "Ledger": "AI Users"}}
+			</h3>
+			<p class="m-login__msg">
+				{{isLedger? "You Can do more than you think with your devices": "Access AI computing resources from anywhere at anytime"}}
+
+			</p>
+			<button class="btn btn-outline-light" routerLink="/quickstart" *ngIf="!isLedger" disabled>View Demo</button> -->
+		</div>
+	</div>
+</div>

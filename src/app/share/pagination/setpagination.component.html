@@ -1,0 +1,50 @@
+<div class="row pageNation-page" *ngIf="totalPages > 1">
+  <div class="pageWrapper">
+      <ul class="page">
+          <li class="forDesktop"><button (click)="gotoPage(1)" *ngIf="currentPage > 1" class="link">
+                  First</button></li>
+          <li class="forMobile"><button (click)="gotoPage(1)" *ngIf="currentPage > 1"> <i
+                      class="fa fa-fast-backward"></i>
+              </button></li>
+          <li class="forDesktop"><button (click)="gotoPage(currentPage - 1)" *ngIf="currentPage > 1" class="link">
+                  Previous </button></li>
+          <li class="forMobile"><button (click)="gotoPage(currentPage - 1)" *ngIf="currentPage > 1"> <i
+                      class="fa fa-step-backward"></i>
+              </button></li>
+          <li *ngFor="let page of currentPagesArr, let i = index" class="pageColor"
+              [ngClass]="{'active': page == currentPage}" >
+              <a href="javascript:;" (click)="gotoPage(page)">
+                  {{ page }}
+              </a>
+          </li>
+          <li class="forDesktop link"><button (click)="gotoPage(currentPage + 1)" *ngIf="currentPage !== totalPages"
+                  class="link">
+                  next
+              </button></li>
+          <li class="forMobile"><button (click)="gotoPage(currentPage + 1)" *ngIf="currentPage !== totalPages"> <i
+                      class="fa fa-step-forward"></i>
+              </button></li>
+          <li class="forDesktop"><button (click)="gotoPage(totalPages)" *ngIf="currentPage < totalPages"
+                  class="link">
+                  Last
+              </button></li>
+          <li class="forMobile"><button (click)="gotoPage(totalPages)" *ngIf="currentPage < totalPages"> <i
+                      class="fa fa-fast-forward"></i>
+              </button></li>
+      </ul>
+  </div>
+
+  <div class="detail-page">
+      <span>{{total}}</span> {{name}} total
+      <span>{{pageSize}}</span> per page
+      <br class="forMobile">
+      <span> Page
+          <select id="taskPage" [(ngModel)]="currentPage" (ngModelChange)="gotoPage(currentPage)">
+              <option [value]="page" *ngFor="let page of totalPagesArr;">
+                  {{page}}
+              </option>
+          </select>
+          /{{totalPages}}
+      </span>
+  </div>
+</div>

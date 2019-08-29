@@ -1,0 +1,109 @@
+<div class="m-content">
+    <div class="row">
+        <div class="col-xl-12">
+            <!--begin:: Widgets/Application Sales-->
+            <div class="m-portlet m-portlet--full-height  m-portlet--unair">
+                <div class="m-portlet__head list-header">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text">
+                                Machine Information
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-caption text-right">
+                        <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#mining" [ngClass]="{'red': start !== 'Start Mining'}">
+                            {{start}}
+                        </button>
+                        <button class="btn btn-success btn-sm" (click)="mining('stop')" [ngClass]="{'red': stop !== 'Stop Mining'}">
+                            {{stop}}
+                        </button>
+                    </div>
+                </div>
+                <div class="m-portlet__body">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="m_widget11_tab1_content">
+                            <!--begin::Widget 11-->
+                            <div class="m-widget11">
+                                <iframe [src]="graphUrl | safeURL" width="100%" height="500" frameborder="0"></iframe>
+                                <div class="table-responsive">
+                                    <!--begin::Table-->
+                                    <table class="table">
+                                        <!--begin::Thead-->
+                                        <thead>
+                                            <tr>
+                                                <td class="m-widget11__label">Container Name</td>
+                                                <td class="m-widget11__label">Container ID</td>
+                                                <td class="m-widget11__label">Create At</td>
+                                                <td class="m-widget11__label">GPU</td>
+                                                <td class="m-widget11__label">Memory Usage</td>
+                                            </tr>
+                                        </thead>
+                                        <!--end::Thead-->
+                                        <!--begin::Tbody-->
+                                        <tbody>
+                                            <tr *ngFor="let container of containerList; let i=index">
+                                                <td></td>
+                                                <td>{{container.container_id}}</td>
+                                                <td>{{container.start_time * 1000 | date:'short'}}</td>
+                                                <td></td>
+                                                <td>{{container.memory_usage | fileSize:2}}</td>
+                                            </tr>
+                                        </tbody>
+                                        <!--end::Tbody-->
+                                    </table>
+                                    <!--end::Table-->
+                                </div>
+                                <!-- <pagination [total]="totalDevices" [currentPage]="currentPage"
+									[pageSize]="pageSize" [numberSize]="listSize"
+									[name]="'devices'" (goPage)="getDevices($event)">
+								</pagination> -->
+                            </div>
+                            <!--end::Widget 11-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end:: Widgets/Application Sales-->
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="mining" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog middle modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">
+                        &times;
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form name="miningForm" #miningForm="ngForm"
+                    class="m-login__form m-form signUpGroup">
+                    <div class="form-group row">
+                        <label for="name" class="col-sm-3 col-4 col-form-label">
+                            Wallet Address
+                        </label>
+                        <div class="col-sm-6 col-8">
+                            <input class="form-control m-input" id="wallet" type="text" [(ngModel)]="walletAddress"
+                                pattern="^(0x)?[0-9a-fA-F]{40}$" name="wallet" #wallet="ngModel" required>
+                            <label *ngIf='wallet.touched && wallet.invalid' class="help-block red">
+                                Please input a valid wallet address
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-theme" (click) = "mining('start')" data-dismiss="modal" [disabled]="miningForm.invalid">
+                    Confirm
+                </button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

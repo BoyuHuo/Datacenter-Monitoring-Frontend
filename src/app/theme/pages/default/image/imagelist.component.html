@@ -1,0 +1,434 @@
+<div class="m-content">
+    <div class="row">
+        <div class="col-xl-12">
+            <!--begin:: Widgets/Application Sales-->
+            <div class="m-portlet m-portlet--full-height  m-portlet--unair">
+                <div class="m-portlet__head list-header">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text">
+                                镜像列表
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-caption text-right">
+                        <!-- <button class="btn btn-success btn-sm" type="button" data-toggle="modal"
+                            data-target="#m_modal_image">
+                            添加镜像
+                        </button> -->
+                        <button class="btn btn-success btn-sm" type="button" data-toggle="modal"
+                            data-target="#add_image">
+                            Add Image
+                        </button>
+                        <!-- <button class="btn btn-success btn-sm" onclick="jumpTo('inner.html')">
+                            启动
+                        </button> -->
+                        <!-- <button class="btn btn-success btn-sm" onclick="jumpTo('inner.html')">
+                            停止
+                        </button> -->
+                        <button class="btn btn-success btn-sm" onclick="jumpTo('inner.html')">
+                            ...更多操作
+                        </button>
+                    </div>
+                </div>
+                <div class="m-portlet__body">
+                    <div class="tab-content" *ngIf="!isShowDetails">
+                        <div class="tab-pane active" id="m_widget11_tab1_content">
+                            <!--begin::Widget 11-->
+                            <div class="m-widget11">
+                                <ngb-tabset>
+                                    <ngb-tab title="已有">
+                                        <ng-template ngbTabContent>
+                                            <div class="table-responsive">
+                                                <!--begin::Table-->
+                                                <table class="table">
+                                                    <!--begin::Thead-->
+                                                    <thead>
+                                                        <tr>
+                                                            <!-- <td class="m-widget11__label">#</td> -->
+                                                            <td class="m-widget11__label m--align-center">Name</td>
+                                                            <td class="m-widget11__label m--align-center">Image Server</td>
+                                                            <td class="m-widget11__label m--align-center">Image Type</td>
+                                                            <td class="m-widget11__label m--align-center">镜像方式</td>
+                                                            <td class="m-widget11__label m--align-center">应用状态</td>
+                                                            <td class="m-widget11__label m--align-center">Image Status</td>
+                                                            <td class="m-widget11__label m--align-center">Capacity</td>
+                                                            <td class="m-widget11__label m--align-center">Platform</td>
+                                                            <td class="m-widget11__label m--align-center">Owner</td>
+                                                            <td class="m-widget11__label m--align-center">Create At</td>
+                                                            <td class="m-widget11__label m--align-center">Delete</td>
+                                                            <td class="m-widget11__label m--align-center">Update</td>
+                                                        </tr>
+                                                    </thead>
+                                                    <!--end::Thead-->
+                                                    <!--begin::Tbody-->
+                                                    <tbody>
+                                                        <tr *ngFor="let image of imageList">
+                                                            <!-- <td>
+                                                                <label
+                                                                    class="m-checkbox m-checkbox--solid m-checkbox--single m-checkbox--brand">
+                                                                    <input type="checkbox"
+                                                                        (click)="isSelected()"><span></span>
+                                                                </label>
+                                                            </td> -->
+                                                            <td class="m--align-center">
+                                                                <span class="m-widget11__title">{{image.name}}</span>
+                                                            </td>
+                                                            <td class="m--align-center">{{image.remark}}</td>
+                                                            <td class="m--align-center">{{image.image_type}}</td>
+                                                            <td class="m--align-center">{{image.image_mode}}</td>
+                                                            <td class="m--align-center">{{image.upload_at}}</td>
+                                                            <td class="m--align-center">{{image.os_type}}</td>
+                                                            <td class="m--align-center">{{image.image_size}}</td>
+                                                            <td class="m--align-center"><span
+                                                                    style="color: green;">{{image.platform}}</span></td>
+                                                            <td class="m--align-center"><span
+                                                                    style="color: green">{{image.owner_id}}</span></td>
+                                                            <td class="m--align-center">{{image.create_at | date}}</td>
+                                                            <td class="m--align-center"><button
+                                                                    class="btn btn-success btn-sm"
+                                                                    (click)="deleteImage(image.ID)">Delete</button></td>
+                                                            <td class="m--align-center">
+                                                                <!-- <button class="btn btn-success btn-sm"
+                                                                    (click)="currentImage = image; isShowDetails = true;">
+                                                                    上传文件
+                                                                </button> -->
+                                                                <button class="btn btn-success btn-sm"
+                                                                    (click)="currentImage = image; isShowDetails = true;">
+                                                                    View
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <!--end::Tbody-->
+                                                </table>
+                                                <!--end::Table-->
+                                            </div>
+                                            <pagination [total]="totalImages" [currentPage]="currentPage"
+                                                [pageSize]="pageSize" [numberSize]="listSize" [name]="'images'"
+                                                (goPage)="getImages($event)">
+                                            </pagination>
+                                        </ng-template>
+                                    </ngb-tab>
+                                    <!-- <ngb-tab title="已删除">
+                                        <ng-template ngbTabContent>
+                                            <div class="table-responsive">
+
+                                                <table class="table">
+
+                                                    <thead>
+                                                        <tr>
+                                                            <td class="m-widget11__label">#</td>
+                                                            <td class="m-widget11__label m--align-center">名称</td>
+                                                            <td class="m-widget11__label m--align-center">镜像服务器</td>
+                                                            <td class="m-widget11__label m--align-center">镜像类型</td>
+                                                            <td class="m-widget11__label m--align-center">镜像方式</td>
+                                                            <td class="m-widget11__label m--align-center">应用状态</td>
+                                                            <td class="m-widget11__label m--align-center">镜像状态</td>
+                                                            <td class="m-widget11__label m--align-center">容量</td>
+                                                            <td class="m-widget11__label m--align-center">平台</td>
+                                                            <td class="m-widget11__label m--align-center">所有者</td>
+                                                            <td class="m-widget11__label m--align-center">创建日期</td>
+                                                        </tr>
+                                                    </thead>
+
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <label
+                                                                    class="m-checkbox m-checkbox--solid m-checkbox--single m-checkbox--brand">
+                                                                    <input type="checkbox"><span></span>
+                                                                </label>
+                                                            </td>
+                                                            <td class="m--align-center">
+                                                                <span class="m-widget11__title">Host#2</span>
+                                                            </td>
+                                                            <td class="m--align-center">8</td>
+                                                            <td class="m--align-center">32.0GB</td>
+                                                            <td class="m--align-center">192.168.1.1</td>
+                                                            <td class="m--align-center">Linux</td>
+                                                            <td class="m--align-center">Nebula cluster #1</td>
+                                                            <td class="m--align-center">22</td>
+                                                            <td class="m--align-center">
+                                                                <div class="m-widget11__chart"
+                                                                    style="height:50px; line-height: 50px;">
+
+                                                                    <span style="color: red;">已停止</span>
+                                                                </div>
+                                                            </td>
+                                                            <td class="m--align-center"><span
+                                                                    style="color: green">已就绪</span></td>
+                                                            <td class="m--align-center">2019/05/29 18:00:00</td>
+                                                        </tr>
+
+                                                    </tbody>
+
+                                                </table>
+
+                                            </div>
+                                        </ng-template>
+                                    </!--> -->
+                                    <!-- <ngb-tab title="已导出">
+                                        <ng-template ngbTabContent>
+                                            <div class="table-responsive">
+
+                                                <table class="table">
+
+
+                                                    <thead>
+                                                        <tr>
+                                                            <td class="m-widget11__label">#</td>
+                                                            <td class="m-widget11__label m--align-center">名称</td>
+                                                            <td class="m-widget11__label m--align-center">镜像服务器</td>
+                                                            <td class="m-widget11__label m--align-center">镜像类型</td>
+                                                            <td class="m-widget11__label m--align-center">镜像方式</td>
+                                                            <td class="m-widget11__label m--align-center">应用状态</td>
+                                                            <td class="m-widget11__label m--align-center">镜像状态</td>
+                                                            <td class="m-widget11__label m--align-center">容量</td>
+                                                            <td class="m-widget11__label m--align-center">平台</td>
+                                                            <td class="m-widget11__label m--align-center">所有者</td>
+                                                            <td class="m-widget11__label m--align-center">创建日期</td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <label
+                                                                    class="m-checkbox m-checkbox--solid m-checkbox--single m-checkbox--brand">
+                                                                    <input type="checkbox"><span></span>
+                                                                </label>
+                                                            </td>
+                                                            <td class="m--align-center">
+                                                                <span class="m-widget11__title">Host#2</span>
+                                                            </td>
+                                                            <td class="m--align-center">8</td>
+                                                            <td class="m--align-center">32.0GB</td>
+                                                            <td class="m--align-center">192.168.1.1</td>
+                                                            <td class="m--align-center">Linux</td>
+                                                            <td class="m--align-center">Nebula cluster #1</td>
+                                                            <td class="m--align-center">22</td>
+                                                            <td class="m--align-center">
+                                                                <div class="m-widget11__chart"
+                                                                    style="height:50px; line-height: 50px;">
+
+                                                                    <span style="color: green;">已启用</span>
+                                                                </div>
+                                                            </td>
+                                                            <td class="m--align-center"><span
+                                                                    style="color:red">未就绪</span></td>
+                                                            <td class="m--align-center">2019/05/29 18:00:00</td>
+                                                        </tr>
+                                                     
+                                                    </tbody>
+                                                
+                                                </table>
+                                               
+                                            </div>
+                                        </ng-template>
+                                    </!--> -->
+                                </ngb-tabset>
+                            </div>
+                            <!--end::Widget 11-->
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="m_widget5_tab2_content" *ngIf="isShowDetails">
+                        <form class="m-form m-form--fit m-form--label-align-right" name="uploadForm"
+                            #deviceForm="ngForm" (submit)="submitImage();" action="">
+                            <div class="m-portlet__body">
+                                <div class="form-group m-form__group row">
+                                    <label for="ostype" class="col-sm-3 col-4 col-form-label">
+                                        ostype
+                                    </label>
+                                    <div class="col-sm-6 col-8">
+                                        <input class="form-control m-input" id="ostype" type="text"
+                                            [(ngModel)]="currentImage.os_type" name="ostype" #name="ngModel">
+                                    </div>
+                                </div>
+                                <div class="form-group m-form__group row">
+                                    <label for="vimageType" class="col-sm-3 col-4 col-form-label">
+                                        version
+                                    </label>
+                                    <div class="col-sm-6 col-8">
+                                        <input class="form-control m-input" id="version" type="text"
+                                            [(ngModel)]="currentImage.version" name="version" #name="ngModel">
+                                    </div>
+                                </div>
+                                <div class="form-group m-form__group row">
+                                    <label for="name" class="col-sm-3 col-4 col-form-label">
+                                        name
+                                    </label>
+                                    <div class="col-sm-6 col-8">
+                                        <input class="form-control m-input" id="name" type="text"
+                                            [(ngModel)]="currentImage.name" name="name" #name="ngModel" required
+                                            maxlength="60">
+                                    </div>
+                                </div>
+                                <div class="form-group m-form__group row">
+                                    <label for="imageType" class="col-sm-3 col-4 col-form-label">
+                                        imageType
+                                    </label>
+                                    <div class="col-sm-6 col-8">
+                                        <input class="form-control m-input" id="imageType" type="text"
+                                            [(ngModel)]="currentImage.image_type" name="imageType" #name="ngModel">
+                                    </div>
+                                </div>
+                                <div class="form-group m-form__group row">
+                                    <label for="imageMode" class="col-sm-3 col-4 col-form-label">
+                                        imageMode
+                                    </label>
+                                    <div class="col-sm-6 col-8">
+                                        <input class="form-control m-input" id="imageMode" type="text"
+                                            [(ngModel)]="currentImage.image_mode" name="imageMode" #name="ngModel">
+                                    </div>
+                                </div>
+                                <div class="form-group m-form__group row">
+                                    <label for="imageSize" class="col-sm-3 col-4 col-form-label">
+                                        imageSize
+                                    </label>
+                                    <div class="col-sm-6 col-8">
+                                        <input class="form-control m-input" id="imageSize" type="text"
+                                            [(ngModel)]="currentImage.image_size" name="imageSize" #name="ngModel">
+                                    </div>
+                                </div>
+                                <div class="form-group m-form__group row">
+                                    <label for="platform" class="col-sm-3 col-4 col-form-label">
+                                        platform
+                                    </label>
+                                    <div class="col-sm-6 col-8">
+                                        <input class="form-control m-input" id="platform" type="text"
+                                            [(ngModel)]="currentImage.platform" name="platform" #name="ngModel">
+                                    </div>
+                                </div>
+                                <div class="form-group m-form__group row">
+                                    <label for="remark" class="col-sm-3 col-4 col-form-label">
+                                        remark
+                                    </label>
+                                    <div class="col-sm-6 col-8">
+                                        <input class="form-control m-input" id="remark" type="text"
+                                            [(ngModel)]="currentImage.remark" name="remark" #name="ngModel">
+                                    </div>
+                                </div>
+                                <div class="form-group m-form__group row">
+                                    <label for="file" class="col-sm-3 col-4 col-form-label">
+                                        file
+                                    </label>
+                                    <div class="col-sm-6 col-8">
+                                        <input class="form-control m-input" id="file" type="file" name="file" required
+                                            ngModel #file="ngModel" (change)="handleFileInput($event.target.files);">
+                                    </div>
+                                </div>
+                                <div class="form-group m-form__group row">
+                                    <label for="imageId" class="col-sm-3 col-4 col-form-label">
+                                        imageId
+                                    </label>
+                                    <div class="col-sm-6 col-8">
+                                        <input class="form-control m-input" id="imageId" type="text"
+                                            [(ngModel)]="currentImage.ID" name="imageId" #name="ngModel">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="m-portlet__foot m-portlet__foot--fit">
+                                <div class="m-form__actions">
+                                    <div class="row">
+                                        <div class="col-sm-2 col-1"></div>
+                                        <div class="col-sm-7 col-9">
+                                            <button type="submit" class="btn btn-theme m-btn m-btn--air m-btn--custom">
+                                                <span>Update</span>
+                                            </button>
+                                            &nbsp;&nbsp;
+                                            <button class="btn btn-secondary m-btn m-btn--air m-btn--custom"
+                                                (click)="isShowDetails = !isShowDetails">
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <!-- upload csv file -->
+                        <!-- <form class="m-form m-form--fit m-form--label-align-right" name="csvForm" #csvForm="ngForm"
+                            (submit)="submitCSV();" action="" *ngIf="isShowDetails">
+                            <div class="m-portlet__body">
+                                <div class="form-group m-form__group row" [ngClass]="{'has-danger': file.invalid && (file.dirty || file.touched ),
+                                            'has-success': file.valid && (file.dirty || file.touched)}">
+                                    <label for="file" class="col-sm-3 col-4 col-form-label">
+                                        CSV 文件
+                                    </label>
+                                    <div class="col-sm-6 col-8">
+                                        <input class="form-control m-input" id="file" type="file" name="file" required
+                                            ngModel #file="ngModel" accept="application/csv"
+                                            (change)="handleFileInput($event.target.files);">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="m-portlet__foot m-portlet__foot--fit">
+                                <div class="m-form__actions">
+                                    <div class="row">
+                                        <div class="col-sm-2 col-1"></div>
+                                        <div class="col-sm-7 col-9">
+                                            <button type="submit" class="btn btn-theme m-btn m-btn--air m-btn--custom"
+                                                [disabled]="csvForm.invalid">
+                                                <span>Upload</span>
+                                            </button>
+                                            &nbsp;&nbsp;
+                                            <button class="btn btn-secondary m-btn m-btn--air m-btn--custom"
+                                                (click)="isShowDetails = !isShowDetails; isUpload = false;">
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form> -->
+                    </div>
+                </div>
+                <!-- modal for create image start -->
+                <div class="modal fade" id="add_image" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-md" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Add Image</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">
+                                        &times;
+                                    </span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form #imageForm="ngForm" name="imageForm" class="needs-validation">
+                                    <div class="form-group row">
+                                        <label for="password" class="col-sm-3 col-4 col-form-label">
+                                            Password
+                                        </label>
+                                        <div class="col-sm-6 col-8">
+                                            <input class="form-control m-input" id="password" type="text"
+                                                [(ngModel)]="password" name="password" #image_pwd="ngModel" required
+                                                maxlength="255">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div>
+                                            <label for=""></label>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-theme" (click)="createImage()"
+                                            data-dismiss="modal">
+                                            Submit
+                                        </button>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                            Cancel
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- modal for create image end -->
+            </div>
+            <!--end:: Widgets/Application Sales-->
+        </div>
+    </div>
+</div>

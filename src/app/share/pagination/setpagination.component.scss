@@ -1,0 +1,67 @@
+.pageNation-page{
+    justify-content: flex-end;
+    font-size: 1rem;
+    .pageWrapper{
+        .page{
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+            flex-direction: row;
+            list-style-type: none;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+            -ms-flex-item-align: center;
+            align-self: center;
+            li{
+                height: 26px;
+                line-height: 26px;
+                padding: 0 0.3rem;
+                margin: 0 0.2rem;
+                color: #898989;
+                text-align: center;
+                -ms-flex-item-align: center;
+                -ms-grid-row-align: center;
+                align-self: center;
+                outline: none;
+                button{
+                    border: 1px solid #ebebeb;
+                    background-color: transparent;
+                    outline: none;
+                }
+                a{
+                    color: initial;
+                }
+                &.active{
+                    background: #34bfa3;
+                    font-weight: 500;
+                    width: 2rem;
+                    height: 2rem;
+                    line-height: 2rem;
+                    border-radius: 1rem;
+                    a{
+                        color: #fff ;
+                    }
+                }
+            }
+        }
+    }
+    .detail-page{
+        margin-left: 2rem;
+        padding-top: 0.2rem;
+    }
+}
+
+.forMobile{
+    @media(min-width: 981px){
+        display: none;
+    }
+}
+
+.forDesktop {
+    @media(max-width: 980px){
+        display: none;
+    }
+}
